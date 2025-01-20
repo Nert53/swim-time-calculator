@@ -189,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.trending_up),
                         border: OutlineInputBorder(),
-                        labelText: 'Stroke Rate [cyclces/min]',
+                        labelText: 'Stroke Rate [cycles/min]',
                       ),
                     ),
                     const SizedBox(
@@ -228,19 +228,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               strokeLengthController.clear();
                             });
                           },
-                          child: const Row(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.errorContainer),
+                          child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.delete_forever,
                                   size: 26,
+                                  color: Theme.of(context).colorScheme.error,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
                                   'Clear',
                                   style: TextStyle(
                                     fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.error,
                                   ),
                                 )
                               ]),
@@ -456,7 +460,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(width: 8),
                             Text(
                               "Save Data",
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             )
                           ]),
                     ),
@@ -505,7 +510,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void doSaveValues(String noteText) async {
     var dateNow = DateTime.now();
-    var formatedDate = DateFormat('HH:mm | dd. MM. yyyy').format(dateNow);
+    var formatedDate = DateFormat('HH:mm | dd.MM.yyyy').format(dateNow);
     var id = ShortUid.create();
 
     AllValues newRecord = AllValues(

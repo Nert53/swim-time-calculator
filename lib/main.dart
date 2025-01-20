@@ -1,5 +1,5 @@
 import 'package:code/constants.dart';
-import 'package:code/view/home_screen.dart';
+import 'package:code/view/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

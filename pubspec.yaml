@@ -35,6 +35,8 @@ dependencies:
   pdf: ^3.11.1
   path_provider: ^2.1.5
   share_plus: ^10.1.4
+  drift: ^2.23.1
+  drift_flutter: ^0.2.4
 
 # edits app icons accross platforms (!! mac and windows must be done again)
 flutter_launcher_icons:
@@ -139,6 +141,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  drift_dev: ^2.23.1
+  build_runner: ^2.4.14
 
 # The following section is specific to Flutter packages.
 flutter:

@@ -1,21 +1,24 @@
-import 'package:code/model/all_values.dart';
+import 'package:code/constants.dart';
+import 'package:code/data/database_drift.dart';
 import 'package:flutter/material.dart';
 
 class DatabaseListTile extends StatelessWidget {
-  final AllValues record;
+  SwimRecordItem record;
   final int index;
-  final Function(AllValues, int) deleteValue;
+  final Function(SwimRecordItem) editNoteDialog;
+  final Function(SwimRecordItem, int) deleteRecord;
 
-  const DatabaseListTile(
+  DatabaseListTile(
       {super.key,
       required this.record,
       required this.index,
-      required this.deleteValue});
+      required this.editNoteDialog,
+      required this.deleteRecord});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key: Key(record.id),
+      key: Key(record.id.toString()),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -75,14 +78,14 @@ class DatabaseListTile extends StatelessWidget {
               const Icon(Icons.notes_outlined),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                    maxLines: 5, overflow: TextOverflow.clip, record.noteText),
+                child:
+                    Text(maxLines: 5, overflow: TextOverflow.clip, record.note),
               ),
             ],
           ),
         ],
       ),
-      subtitle: Text('Saved on: ${record.date}',
+      subtitle: Text('Saved on: ${dateFormat.format(record.dateCreated)}',
           style: const TextStyle(color: Colors.blueGrey)),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
@@ -93,7 +96,7 @@ class DatabaseListTile extends StatelessWidget {
               size: 30,
             ),
             onPressed: () {
-              
+              editNoteDialog(record);
             },
           ),
           IconButton(
@@ -104,7 +107,7 @@ class DatabaseListTile extends StatelessWidget {
             ),
             tooltip: 'Delete this value.',
             onPressed: () async {
-              deleteValue(record, index);
+              deleteRecord(record, index);
             },
           ),
         ],

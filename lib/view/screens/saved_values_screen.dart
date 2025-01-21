@@ -38,61 +38,6 @@ class _SavedValuesScreenState extends State<SavedValuesScreen> {
     super.initState();
   }
 
-  void editNoteDialog(AllValues record) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Edit note for this record'),
-              Text(
-                'Record from: ${record.date}',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontStyle: FontStyle.italic),
-              ),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextField(
-                controller: noteTextController..text = record.noteText,
-                maxLines: 3,
-                decoration: const InputDecoration(border: OutlineInputBorder()),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.close_outlined),
-                      color: Colors.red),
-                  IconButton(
-                    onPressed: () {
-                      record.noteText = noteTextController.text;
-                      DatabaseService.instance.updateValue(record);
-                      Navigator.of(context).pop();
-                      _getAllRecords();
-                    },
-                    icon: const Icon(Icons.save_outlined),
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +47,6 @@ class _SavedValuesScreenState extends State<SavedValuesScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                final database = DatabaseService.instance;
-                exportDatabaseToPdf(context, database);
               },
               icon: const Icon(
                 Icons.file_download_outlined,
@@ -181,7 +124,6 @@ class _SavedValuesScreenState extends State<SavedValuesScreen> {
                 child: DatabaseListTile(
                   record: record,
                   index: index,
-                  editNoteDialog: editNoteDialog,
                   deleteValue: _deleteValue,
                 ),
               );

@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'package:code/data/database_service.dart';
+import 'package:code/constants.dart';
+import 'package:code/data/database_drift.dart';
 import 'package:code/functions.dart';
-import 'package:code/model/all_values.dart';
+import 'package:code/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,8 +10,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
-Future<void> exportDatabaseToPdf(
-    BuildContext context, DatabaseService database) async {
+Future<void> exportDatabaseToPdf(BuildContext context) async {
   DateFormat formatter = DateFormat('yyyy-MM-dd HH-mm');
   String exportTime = formatter.format(DateTime.now());
   String fileName = 'swimTime_$exportTime.pdf';
@@ -27,7 +27,7 @@ Future<void> exportDatabaseToPdf(
     );
 
     // Query database
-    final List<AllValues> data = await database.getValues();
+    final List<SwimRecordItem> data = await database.allRecords;
     if (data.isEmpty) {
       if (context.mounted) {
         Navigator.pop(context);
@@ -64,13 +64,15 @@ Future<void> exportDatabaseToPdf(
           ),
           pw.Padding(
             padding: const pw.EdgeInsets.all(4),
-            child: pw.Text(value),
+            child: value.isEmpty
+                ? pw.Text('(empty)', style: pw.TextStyle(color: PdfColors.grey))
+                : pw.Text(value),
           ),
         ],
       );
     }
 
-    pw.Widget createRecordTable(AllValues record) {
+    pw.Widget createRecordTable(SwimRecordItem record) {
       return pw.Container(
         width: 250, // Fixed width for each small table
         padding: const pw.EdgeInsets.all(8),
@@ -83,9 +85,6 @@ Future<void> exportDatabaseToPdf(
           children: [
             // Header with date
             pw.TableRow(
-              decoration: pw.BoxDecoration(
-                color: PdfColor.fromInt(0xFF9bf1f8),
-              ),
               children: [
                 pw.Padding(
                   padding: const pw.EdgeInsets.all(4),
@@ -106,8 +105,7 @@ Future<void> exportDatabaseToPdf(
               ],
             ),
             // Data rows
-            createDataRow('Created on',
-                '${record.date.toString().substring(8)} ${record.date.toString().substring(0, 5)}'),
+            createDataRow('Created on', dateFormat.format(record.dateCreated)),
             createDataRow('Original Time', '${record.originalTime}'),
             createDataRow(
                 'Original Stroke Rate', '${record.originalStrokeRate}'),
@@ -117,6 +115,10 @@ Future<void> exportDatabaseToPdf(
             createDataRow('New Stroke Length', '${record.newStrokeLength}'),
             // Note row
             pw.TableRow(
+              decoration: pw.BoxDecoration(
+                border: pw.Border.all(
+                    color: PdfColors.black, style: pw.BorderStyle.solid),
+              ),
               children: [
                 pw.Padding(
                   padding: const pw.EdgeInsets.all(4),
@@ -125,7 +127,7 @@ Future<void> exportDatabaseToPdf(
                 pw.Padding(
                   padding: const pw.EdgeInsets.all(4),
                   child: pw.Text(
-                    replaceSpecialChars(record.noteText.toString()),
+                    replaceSpecialChars(record.note),
                     maxLines: 5,
                   ),
                 ),

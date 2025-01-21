@@ -1,7 +1,10 @@
 import 'package:code/constants.dart';
+import 'package:code/data/database_drift.dart';
 import 'package:code/view/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+late AppDatabase database;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +14,7 @@ void main() {
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft
   ]);
+  database = AppDatabase();
   runApp(const MyApp());
 }
 

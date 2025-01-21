@@ -1,13 +1,12 @@
 import 'package:code/constants.dart';
-import 'package:code/data/database_service.dart';
-import 'package:code/model/all_values.dart';
-import 'package:code/view/widgets/my_drawer.dart';
+import 'package:code/data/database_drift.dart';
+import 'package:code/main.dart';
+import 'package:code/view/widgets/menu_drawer.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hold_down_button/hold_down_button.dart';
-import 'package:shortuid/shortuid.dart';
-import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -115,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           centerTitle: true,
         ),
-        drawer: const MyDrawer(),
+        drawer: const MenuDrawer(),
         bottomNavigationBar: const Padding(
           padding: EdgeInsets.only(bottom: 4.0),
           child: Image(
@@ -484,8 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
               content: TextField(
                 controller: noteTextDialogController,
                 decoration: const InputDecoration(
-                    labelText: 'Enter note for this record',
-                    border: OutlineInputBorder()),
+                    labelText: 'Enter note', border: OutlineInputBorder()),
               ),
               actions: [
                 TextButton(
@@ -509,22 +507,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void doSaveValues(String noteText) async {
-    var dateNow = DateTime.now();
-    var formatedDate = DateFormat('HH:mm | dd.MM.yyyy').format(dateNow);
-    var id = ShortUid.create();
+    SwimRecordItemsCompanion newRecord = SwimRecordItemsCompanion(
+        originalTime: drift.Value(double.parse(timeController.text)),
+        originalStrokeRate:
+            drift.Value(double.parse(strokeRateController.text)),
+        sectionLength: drift.Value(double.parse(sectionLengthController.text)),
+        newTime: drift.Value(double.parse(resultTimeController.text)),
+        newStrokeRate: drift.Value(double.parse(strokeRateController2.text)),
+        newStrokeLength: drift.Value(double.parse(strokeLengthController.text)),
+        dateCreated: drift.Value(DateTime.now()),
+        note: drift.Value(noteText));
 
-    AllValues newRecord = AllValues(
-        id: id,
-        originalTime: double.parse(timeController.text),
-        originalStrokeRate: double.parse(strokeRateController.text),
-        sectionLength: double.parse(sectionLengthController.text),
-        newTime: double.parse(resultTimeController.text),
-        newStrokeRate: double.parse(strokeRateController2.text),
-        newStrokeLength: double.parse(strokeLengthController.text),
-        date: formatedDate,
-        noteText: noteText);
-
-    if (await DatabaseService.instance.addValue(newRecord)) {
+    if (await database.addRecord(newRecord) != null) {
       displaySnackBar(context, 'Data saved successfully!', color: Colors.green);
     } else {
       displaySnackBar(context, 'Data could not be saved!', color: errorColor);

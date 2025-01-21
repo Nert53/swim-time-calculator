@@ -1,10 +1,11 @@
+import 'package:code/view/screens/new_database_screen.dart';
 import 'package:code/view/screens/saved_values_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({
+class MenuDrawer extends StatelessWidget {
+  const MenuDrawer({
     super.key,
   });
 
@@ -50,13 +51,22 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.table_rows_rounded),
+            title: const Text('New database'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return NewDatabaseScreen();
+              }));
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('About app'),
             onTap: () {
               _dialogInfo(
                 context,
                 'About app',
-                'Version 1.1'
+                'Version 2.0.0'
                     '\n\nOriginal idea: Raul Arellano '
                     '\n\nAuthor: umimplavat.cz '
                     '\n\nCreator: Vojtech Netrh '

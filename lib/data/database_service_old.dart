@@ -3,6 +3,9 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 
+//! THIS CLASS IS NO LONGER USED
+// it is replaced by database_drift.dart
+
 class DatabaseService {
   static final DatabaseService instance = DatabaseService._init();
   static Database? _database;

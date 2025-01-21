@@ -2,19 +2,19 @@ import 'dart:async';
 import 'package:code/data/database_drift.dart';
 import 'package:code/main.dart';
 import 'package:code/pdf_export.dart';
-import 'package:code/view/widgets/database_list_tile2.dart';
+import 'package:code/view/widgets/database_list_tile.dart';
 import 'package:code/view/widgets/info_database_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class NewDatabaseScreen extends StatefulWidget {
-  const NewDatabaseScreen({super.key});
+class SavedRecordsScreen extends StatefulWidget {
+  const SavedRecordsScreen({super.key});
 
   @override
-  State<NewDatabaseScreen> createState() => _NewDatabaseScreenState();
+  State<SavedRecordsScreen> createState() => _SavedRecordsScreenState();
 }
 
-class _NewDatabaseScreenState extends State<NewDatabaseScreen> {
+class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
   late List<SwimRecordItem> _records = [];
   bool isLoading = false;
   final noteTextController = TextEditingController();

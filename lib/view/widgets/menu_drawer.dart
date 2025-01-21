@@ -1,5 +1,4 @@
-import 'package:code/view/screens/new_database_screen.dart';
-import 'package:code/view/screens/saved_values_screen.dart';
+import 'package:code/view/screens/saved_records_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -42,20 +41,11 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.storage_outlined),
+            leading: const Icon(Icons.storage_rounded),
             title: const Text('Saved data'),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const SavedValuesScreen();
-              }));
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.table_rows_rounded),
-            title: const Text('New database'),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return NewDatabaseScreen();
+                return const SavedRecordsScreen();
               }));
             },
           ),

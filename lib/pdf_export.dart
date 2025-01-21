@@ -64,9 +64,7 @@ Future<void> exportDatabaseToPdf(BuildContext context) async {
           ),
           pw.Padding(
             padding: const pw.EdgeInsets.all(4),
-            child: value.isEmpty
-                ? pw.Text('(empty)', style: pw.TextStyle(color: PdfColors.grey))
-                : pw.Text(value),
+            child: pw.Text(value),
           ),
         ],
       );
@@ -85,6 +83,11 @@ Future<void> exportDatabaseToPdf(BuildContext context) async {
           children: [
             // Header with date
             pw.TableRow(
+              decoration: pw.BoxDecoration(
+                color: PdfColor.fromInt(umimplavatMainColor.value),
+                border: pw.Border.all(
+                    color: PdfColors.black, style: pw.BorderStyle.solid),
+              ),
               children: [
                 pw.Padding(
                   padding: const pw.EdgeInsets.all(4),
@@ -126,10 +129,13 @@ Future<void> exportDatabaseToPdf(BuildContext context) async {
                 ),
                 pw.Padding(
                   padding: const pw.EdgeInsets.all(4),
-                  child: pw.Text(
-                    replaceSpecialChars(record.note),
-                    maxLines: 5,
-                  ),
+                  child: record.note.isEmpty
+                      ? pw.Text('(empty)',
+                          style: pw.TextStyle(color: PdfColors.grey600))
+                      : pw.Text(
+                          replaceSpecialChars(record.note),
+                          maxLines: 5,
+                        ),
                 ),
               ],
             ),
@@ -190,7 +196,7 @@ Future<void> exportDatabaseToPdf(BuildContext context) async {
       ),
     );
 
-    // Get directory for iOS
+    // Get directory for saving file
     final Directory directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/$fileName');
     await file.writeAsBytes(await pdf.save());

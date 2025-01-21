@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:code/data/database_service.dart';
 import 'package:code/model/all_values.dart';
-import 'package:code/pdf_export.dart';
 import 'package:code/view/widgets/database_list_tile.dart';
 import 'package:code/view/widgets/info_database_dialog.dart';
 import 'package:flutter/material.dart';

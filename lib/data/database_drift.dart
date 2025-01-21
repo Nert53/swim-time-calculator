@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:code/data/database_service.dart';
 import 'package:code/main.dart';
 import 'package:code/model/all_values.dart';
@@ -32,7 +30,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (Migrator m) async {
           await m.createAll();
-          _importDataFromOldDatabase();
+          await _importDataFromOldDatabase();
         },
       );
 
@@ -44,6 +42,8 @@ class AppDatabase extends _$AppDatabase {
       ),
     );
   }
+
+  get oldRecordsCount => _importDataFromOldDatabase();
 
   addRecord(SwimRecordItemsCompanion record) {
     try {
@@ -75,7 +75,7 @@ class AppDatabase extends _$AppDatabase {
   }
 }
 
-void _importDataFromOldDatabase() async {
+_importDataFromOldDatabase() async {
   // Import data from old database
   List<AllValues> oldRecords = await DatabaseService.instance.getValues();
   for (var record in oldRecords) {
@@ -98,4 +98,6 @@ void _importDataFromOldDatabase() async {
           int.parse(day), int.parse(hour), int.parse(minute))),
     ));
   }
+
+  return oldRecords.length;
 }

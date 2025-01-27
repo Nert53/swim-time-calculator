@@ -42,7 +42,7 @@ class MenuDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.storage_rounded),
-            title: const Text('Saved data'),
+            title: const Text('Saved values'),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const SavedRecordsScreen();

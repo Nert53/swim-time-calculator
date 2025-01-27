@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'package:code/constants.dart';
 import 'package:code/data/database_drift.dart';
 import 'package:code/main.dart';
 import 'package:code/pdf_export.dart';
 import 'package:code/view/widgets/database_list_tile.dart';
 import 'package:code/view/widgets/info_database_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class SavedRecordsScreen extends StatefulWidget {
   const SavedRecordsScreen({super.key});
@@ -16,11 +16,14 @@ class SavedRecordsScreen extends StatefulWidget {
 
 class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
   late List<SwimRecordItem> _records = [];
+
   bool isLoading = false;
-  final noteTextController = TextEditingController();
   bool isUndoPressed = false;
+  bool isSelectingView = false;
+  bool isSelectedAll = false;
   Set<int> selectedSort = {1};
-  DateFormat dateFormat = DateFormat('dd-MM-yyyy (HH:mm)');
+  List<Map<int, bool>> isSelected = [];
+  final noteTextController = TextEditingController();
 
   Future<void> _getAllRecords() async {
     setState(() {
@@ -28,6 +31,8 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
     });
 
     _records = await database.allRecords;
+    isSelected =
+        List.generate(_records.length, (index) => {_records[index].id: false});
 
     setState(() {
       isLoading = false;
@@ -52,9 +57,9 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
               Text(
                 'Record from: ${dateFormat.format(record.dateCreated)}',
                 style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontStyle: FontStyle.italic),
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
             ],
           ),
@@ -71,12 +76,16 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.close_outlined),
-                      color: Colors.red),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'Discard',
+                      style:
+                          TextStyle(color: Theme.of(context).colorScheme.error),
+                    ),
+                  ),
                   FilledButton(
                     onPressed: () {
                       SwimRecordItem newRecord =
@@ -97,6 +106,32 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
         );
       },
     );
+  }
+
+  void deleteMultipleRecords(
+      List<SwimRecordItem> records, List<int> recordIndex) {
+    for (int i = 0; i < records.length; i++) {
+      setState(() {
+        _records.remove(records[i]);
+      });
+    }
+
+    displayUndoSnackbarMultiple(context, records, recordIndex);
+    Timer.periodic(const Duration(milliseconds: 3000), (timer) async {
+      if (isUndoPressed) {
+        timer.cancel();
+        isUndoPressed = false;
+        return;
+      } else {
+        for (int i = 0; i < records.length; i++) {
+          database.deleteRecordById(records[i].id);
+        }
+        isUndoPressed = false;
+        setState(() {
+          _getAllRecords();
+        });
+      }
+    });
   }
 
   void deleteRecord(SwimRecordItem record, int recordIndex) {
@@ -147,6 +182,34 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
     );
   }
 
+  void displayUndoSnackbarMultiple(BuildContext context,
+      List<SwimRecordItem> records, List<int> recordsIndex) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Multiple values of were deleted.'),
+        duration: const Duration(milliseconds: 3000),
+        behavior: SnackBarBehavior.floating,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        action: SnackBarAction(
+          label: 'Undo',
+          textColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          onPressed: () {
+            isUndoPressed = true;
+            setState(() {
+              for (var i = 0; i < records.length; i++) {
+                _records.insert(recordsIndex[i], records[i]);
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,17 +218,31 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: [
           IconButton(
-              onPressed: () async {
-                exportDatabaseToPdf(context);
+              onPressed: () {
+                setState(() {
+                  isSelectingView = !isSelectingView;
+                  if (!isSelectingView) {
+                    isSelected = List.generate(_records.length,
+                        (index) => {_records[index].id: false});
+                  }
+                });
               },
-              icon: const Icon(
-                Icons.file_download_outlined,
-                color: Colors.black,
-              )),
+              icon: Icon(Icons.check_box_outlined),
+              tooltip: 'Enable selection mode.'),
+          IconButton(
+            onPressed: () async {
+              exportDatabaseToPdf(context);
+            },
+            icon: const Icon(
+              Icons.file_download_outlined,
+              color: Colors.black,
+            ),
+            tooltip: 'Export all records to PDF.',
+          ),
           IconButton(
             icon: const Icon(Icons.info_outline),
             color: Colors.black,
-            tooltip: 'View help.',
+            tooltip: 'View information about icons.',
             onPressed: () {
               showDialog(
                 context: context,
@@ -191,55 +268,123 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
     return Column(
       children: [
         SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Sort by:', style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(width: 8),
-            SegmentedButton(
-              selected: selectedSort,
-              segments: const [
-                ButtonSegment(value: 2, label: Text('Oldest')),
-                ButtonSegment(value: 1, label: Text('Newest')),
-              ],
-              onSelectionChanged: (value) {
-                setState(() {
-                  if (value.contains(1)) {
-                    _records
-                        .sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
-                  } else {
-                    _records
-                        .sort((a, b) => a.dateCreated.compareTo(b.dateCreated));
-                  }
-                  selectedSort = value;
-                });
-              },
-            ),
-          ],
-        ),
+        !isSelectingView
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Sort by:',
+                      style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(width: 8),
+                  SegmentedButton(
+                    selected: selectedSort,
+                    segments: const [
+                      ButtonSegment(value: 2, label: Text('Oldest')),
+                      ButtonSegment(value: 1, label: Text('Newest')),
+                    ],
+                    onSelectionChanged: (value) {
+                      setState(() {
+                        if (value.contains(1)) {
+                          _records.sort(
+                              (a, b) => b.dateCreated.compareTo(a.dateCreated));
+                        } else {
+                          _records.sort(
+                              (a, b) => a.dateCreated.compareTo(b.dateCreated));
+                        }
+                        selectedSort = value;
+                      });
+                    },
+                  ),
+                ],
+              )
+            : ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                leading: FilledButton(
+                    onPressed: () {}, child: Text('Export selected')),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          List<SwimRecordItem> recordsToDelete = [];
+                          List<int> recordsIndexToDelete = [];
+                          for (int i = 0; i < isSelected.length; i++) {
+                            if (isSelected[i][_records[i].id] == true) {
+                              recordsToDelete.add(_records[i]);
+                              recordsIndexToDelete.add(i);
+                            }
+                          }
+
+                          deleteMultipleRecords(
+                              recordsToDelete, recordsIndexToDelete);
+
+                          _getAllRecords();
+                        });
+                      },
+                      style: ButtonStyle(
+                          foregroundColor: WidgetStateProperty.all(
+                              Theme.of(context).colorScheme.error)),
+                      icon: const Icon(Icons.delete),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isSelectedAll = !isSelectedAll;
+                          isSelected = List.generate(_records.length,
+                              (index) => {_records[index].id: isSelectedAll});
+                        });
+                      },
+                      icon: const Icon(Icons.select_all),
+                    ),
+                  ],
+                ),
+              ),
         Expanded(
           child: ListView.builder(
             itemCount: _records.length,
             itemBuilder: (context, index) {
               final record = _records[index];
-              return Container(
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0, 2),
-                        blurRadius: 2,
-                      ),
-                    ],
+              var recordCheckedIndex =
+                  isSelected.indexWhere((map) => map.containsKey(record.id));
+
+              return Row(
+                children: [
+                  isSelectingView
+                      ? Checkbox(
+                          value: isSelected[recordCheckedIndex][record.id],
+                          onChanged: (value) {
+                            setState(() {
+                              isSelected[recordCheckedIndex]
+                                  [_records[index].id] = value!;
+                            });
+                          })
+                      : const SizedBox(width: 0),
+                  Expanded(
+                    child: Container(
+                        margin: isSelectingView
+                            ? const EdgeInsets.only(
+                                top: 8, left: 0, right: 8, bottom: 8)
+                            : EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0, 2),
+                              blurRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: DatabaseListTile(
+                            record: record,
+                            index: index,
+                            editNoteDialog: editNoteDialog,
+                            deleteRecord: deleteRecord)),
                   ),
-                  child: DatabaseListTile(
-                      record: record,
-                      index: index,
-                      editNoteDialog: editNoteDialog,
-                      deleteRecord: deleteRecord));
+                ],
+              );
             },
           ),
         ),

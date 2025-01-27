@@ -458,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Icon(Icons.save),
                             SizedBox(width: 8),
                             Text(
-                              "Save Data",
+                              "Save Values",
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             )
@@ -479,11 +479,24 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: const Text('Save data'),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Save values'),
+                  Text(
+                    'Date created: ${dateFormat.format(DateTime.now())}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                ],
+              ),
               content: TextField(
                 controller: noteTextDialogController,
                 decoration: const InputDecoration(
-                    labelText: 'Enter note', border: OutlineInputBorder()),
+                    labelText: 'Note for record', border: OutlineInputBorder()),
               ),
               actions: [
                 TextButton(
@@ -491,16 +504,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     noteTextDialogController.clear();
                     Navigator.pop(context);
                   },
-                  child: Text('Discard', style: TextStyle(color: errorColor)),
+                  child: Text('Cancel', style: TextStyle(color: errorColor)),
                 ),
-                TextButton.icon(
+                FilledButton(
                   onPressed: () {
                     doSaveValues(noteTextDialogController.text);
                     noteTextDialogController.clear();
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.save),
-                  label: const Text('Save'),
+                  child: const Text('Save'),
                 ),
               ],
             ));
@@ -519,9 +531,10 @@ class _HomeScreenState extends State<HomeScreen> {
         note: drift.Value(noteText));
 
     if (await database.addRecord(newRecord) != null) {
-      displaySnackBar(context, 'Data saved successfully!', color: Colors.green);
+      displaySnackBar(context, 'Values saved successfully!',
+          color: Colors.green);
     } else {
-      displaySnackBar(context, 'Data could not be saved!', color: errorColor);
+      displaySnackBar(context, 'Values could not be saved!', color: errorColor);
     }
   }
 }

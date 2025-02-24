@@ -3,6 +3,7 @@ import 'package:code/constants.dart';
 import 'package:code/data/database_drift.dart';
 import 'package:code/main.dart';
 import 'package:code/pdf_export.dart';
+import 'package:code/view/screens/home_screen.dart';
 import 'package:code/view/widgets/database_list_tile.dart';
 import 'package:code/view/widgets/info_database_dialog.dart';
 import 'package:flutter/material.dart';
@@ -108,32 +109,6 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
     );
   }
 
-  void deleteMultipleRecords(
-      List<SwimRecordItem> records, List<int> recordIndex) {
-    for (int i = 0; i < records.length; i++) {
-      setState(() {
-        _records.remove(records[i]);
-      });
-    }
-
-    displayUndoSnackbarMultiple(context, records, recordIndex);
-    Timer.periodic(const Duration(milliseconds: 3000), (timer) async {
-      if (isUndoPressed) {
-        timer.cancel();
-        isUndoPressed = false;
-        return;
-      } else {
-        for (int i = 0; i < records.length; i++) {
-          database.deleteRecordById(records[i].id);
-        }
-        isUndoPressed = false;
-        setState(() {
-          _getAllRecords();
-        });
-      }
-    });
-  }
-
   void deleteRecord(SwimRecordItem record, int recordIndex) {
     setState(() {
       _records.remove(record);
@@ -182,34 +157,6 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
     );
   }
 
-  void displayUndoSnackbarMultiple(BuildContext context,
-      List<SwimRecordItem> records, List<int> recordsIndex) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Multiple values of were deleted.'),
-        duration: const Duration(milliseconds: 3000),
-        behavior: SnackBarBehavior.floating,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        action: SnackBarAction(
-          label: 'Undo',
-          textColor: Theme.of(context).colorScheme.primary,
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          onPressed: () {
-            isUndoPressed = true;
-            setState(() {
-              for (var i = 0; i < records.length; i++) {
-                _records.insert(recordsIndex[i], records[i]);
-              }
-            });
-          },
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -231,7 +178,10 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
               tooltip: 'Enable selection mode.'),
           IconButton(
             onPressed: () async {
-              exportDatabaseToPdf(context);
+              List<SwimRecordItem> dataToExport = await database.allRecords;
+              if (dataToExport.isNotEmpty && context.mounted) {
+                exportRecordsToPDF(context, dataToExport);
+              }
             },
             icon: const Icon(
               Icons.file_download_outlined,
@@ -300,33 +250,24 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                 leading: FilledButton(
-                    onPressed: () {}, child: Text('Export selected')),
+                    onPressed: () {
+                      List<SwimRecordItem> selectedRecords = [];
+                      for (int i = 0; i < isSelected.length; i++) {
+                        if (isSelected[i][_records[i].id] == true) {
+                          selectedRecords.add(_records[i]);
+                        }
+                      }
+
+                      if (selectedRecords.isEmpty) {
+                        displaySnackBar(context, 'No values selected.');
+                        return;
+                      }
+                      exportRecordsToPDF(context, selectedRecords);
+                    },
+                    child: Text('Export selected')),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          List<SwimRecordItem> recordsToDelete = [];
-                          List<int> recordsIndexToDelete = [];
-                          for (int i = 0; i < isSelected.length; i++) {
-                            if (isSelected[i][_records[i].id] == true) {
-                              recordsToDelete.add(_records[i]);
-                              recordsIndexToDelete.add(i);
-                            }
-                          }
-
-                          deleteMultipleRecords(
-                              recordsToDelete, recordsIndexToDelete);
-
-                          _getAllRecords();
-                        });
-                      },
-                      style: ButtonStyle(
-                          foregroundColor: WidgetStateProperty.all(
-                              Theme.of(context).colorScheme.error)),
-                      icon: const Icon(Icons.delete),
-                    ),
                     IconButton(
                       onPressed: () {
                         setState(() {
@@ -335,7 +276,10 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                               (index) => {_records[index].id: isSelectedAll});
                         });
                       },
-                      icon: const Icon(Icons.select_all),
+                      icon: const Icon(
+                        Icons.select_all,
+                        size: 28,
+                      ),
                     ),
                   ],
                 ),
@@ -378,10 +322,12 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                           ],
                         ),
                         child: DatabaseListTile(
-                            record: record,
-                            index: index,
-                            editNoteDialog: editNoteDialog,
-                            deleteRecord: deleteRecord)),
+                          record: record,
+                          index: index,
+                          editNoteDialog: editNoteDialog,
+                          deleteRecord: deleteRecord,
+                          simple: !isSelectingView,
+                        )),
                   ),
                 ],
               );

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class DatabaseListTile extends StatelessWidget {
   SwimRecordItem record;
   final int index;
+  final bool simple;
   final Function(SwimRecordItem) editNoteDialog;
   final Function(SwimRecordItem, int) deleteRecord;
 
@@ -13,7 +14,8 @@ class DatabaseListTile extends StatelessWidget {
       required this.record,
       required this.index,
       required this.editNoteDialog,
-      required this.deleteRecord});
+      required this.deleteRecord,
+      required this.simple});
 
   @override
   Widget build(BuildContext context) {
@@ -87,31 +89,33 @@ class DatabaseListTile extends StatelessWidget {
       ),
       subtitle: Text('Saved on: ${dateFormat.format(record.dateCreated)}',
           style: const TextStyle(color: Colors.blueGrey)),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(
-              Icons.edit_note_outlined,
-              size: 30,
-            ),
-            onPressed: () {
-              editNoteDialog(record);
-            },
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.delete_outlined,
-              color: Colors.red,
-              size: 30,
-            ),
-            tooltip: 'Delete this value.',
-            onPressed: () async {
-              deleteRecord(record, index);
-            },
-          ),
-        ],
-      ),
+      trailing: simple
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.edit_note_outlined,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    editNoteDialog(record);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete_outlined,
+                    color: Theme.of(context).colorScheme.error,
+                    size: 30,
+                  ),
+                  tooltip: 'Delete this value.',
+                  onPressed: () async {
+                    deleteRecord(record, index);
+                  },
+                ),
+              ],
+            )
+          : null,
     );
   }
 }

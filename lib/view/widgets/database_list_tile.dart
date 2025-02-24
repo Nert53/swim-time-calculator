@@ -80,8 +80,13 @@ class DatabaseListTile extends StatelessWidget {
               const Icon(Icons.notes_outlined),
               const SizedBox(width: 8),
               Expanded(
-                child:
-                    Text(maxLines: 5, overflow: TextOverflow.clip, record.note),
+                child: record.note.isEmpty
+                    ? const Text(
+                        '(No note)',
+                        style: TextStyle(color: Colors.grey),
+                      )
+                    : Text(
+                        maxLines: 5, overflow: TextOverflow.clip, record.note),
               ),
             ],
           ),

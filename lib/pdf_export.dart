@@ -11,7 +11,7 @@ import 'package:share_plus/share_plus.dart';
 
 Future<void> exportRecordsToPDF(
     BuildContext context, List<SwimRecordItem> data) async {
-  DateFormat formatter = DateFormat('yyyy-MM-dd HH-mm');
+  DateFormat formatter = DateFormat('dd-MM-yyyy HH:mm');
   String exportTime = formatter.format(DateTime.now());
   String fileName = 'swimTime_$exportTime.pdf';
 
@@ -249,6 +249,4 @@ Future<void> exportRecordsToPDF(
       },
     );
   }
-
-  
 }

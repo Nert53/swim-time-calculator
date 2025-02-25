@@ -106,12 +106,12 @@ Future<void> exportRecordsToPDF(
           ),
           // Data rows
           createDataRow('Created on', dateFormat.format(record.dateCreated)),
-          createDataRow('Original Time', '${record.originalTime}'),
-          createDataRow('Original Stroke Rate', '${record.originalStrokeRate}'),
-          createDataRow('Section Length', '${record.sectionLength}'),
-          createDataRow('New Time', '${record.newTime}'),
-          createDataRow('New Stroke Rate', '${record.newStrokeRate}'),
-          createDataRow('New Stroke Length', '${record.newStrokeLength}'),
+          createDataRow('Original Time [s]', '${record.originalTime}'),
+          createDataRow('Original Stroke Rate [cycles/min]', '${record.originalStrokeRate}'),
+          createDataRow('Section Length [m]', '${record.sectionLength}'),
+          createDataRow('New Time [s]', '${record.newTime}'),
+          createDataRow('New Stroke Rate [cycles/min]', '${record.newStrokeRate}'),
+          createDataRow('New Stroke Length [m]', '${record.newStrokeLength}'),
           // Note row
           pw.TableRow(
             decoration: pw.BoxDecoration(

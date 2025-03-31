@@ -20,8 +20,8 @@ If you download the app from the mobile stores mentioned above and you like it, 
 
 <div align="center">
   
-![feature graphic](.github/assets/main-graphic.png)
-![github screenshots graphic](.github/assets/github-graphic.png)
+![feature graphic](.github/assets/main-graphic-new.png)
+![github screenshots graphic](.github/assets/github-graphic-new.png)
 
 </div>
 
@@ -33,9 +33,26 @@ If you download the app from the mobile stores mentioned above and you like it, 
 
 **Creator:** [Vojtech Netrh](https://github.com/Nert53)
 
+## Versions changelog 
+
+#### v2.0.0
+- Export saved data to PDF.
+- UI changes.
+
+#### v1.1.3
+- Fixed bug with saving decimal values.
+- Added undo feature for deleting values.
+
+#### v1.1.2
+- Fixed bug with no possibility of entering decimal numbers.
+
+#### v1.1.0
+- Initial version
+
 ## Technical Support Contant
 If you have any questions please contact us on marek@umimplavat.cz or umimplavat@gmail.com.
 
 ## Want to support us? 🤝🏻
 
  If you would like to support us please reach <a href="mailto:marek@umimplavat.cz">Marek Polach</a>.
+ And you can definitely give ⭐️ to this repo.

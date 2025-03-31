@@ -39,3 +39,4 @@ If you have any questions please contact us on marek@umimplavat.cz or umimplavat
 ## Want to support us? 🤝🏻
 
  If you would like to support us please reach <a href="mailto:marek@umimplavat.cz">Marek Polach</a>.
+ And you can definitely give ⭐️ to this repo.

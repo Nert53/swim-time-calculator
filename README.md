@@ -12,6 +12,8 @@ This helps swimmers better understand how even small adjustments in **SR** or **
 
 [<img width="140" src=".github/assets/app-store-badge.png">](https://apps.apple.com/us/app/swim-time-calculator/id6670363039?platform=iphone)
 
+If you download the app from the mobile stores mentioned above and you like it, please leave us a review on the store. If you encounter any problems or have a suggestion for a new feature, feel free to email <a href="mailto:marek@umimplavat.cz">email</a> us.
+
 </div>
 
 ## How our app looks like?
@@ -29,11 +31,11 @@ This helps swimmers better understand how even small adjustments in **SR** or **
 
 **Author:** [umimplavat.cz](https://umimplavat.cz/)
 
-**Creator:** Vojtech Netrh
+**Creator:** [Vojtech Netrh](https://github.com/Nert53)
 
-## Support Contant
+## Technical Support Contant
 If you have any questions please contact us on marek@umimplavat.cz or umimplavat@gmail.com.
 
-## Want to support us
+## Want to support us? 🤝🏻
 
  If you would like to support us please reach <a href="mailto:marek@umimplavat.cz">Marek Polach</a>.

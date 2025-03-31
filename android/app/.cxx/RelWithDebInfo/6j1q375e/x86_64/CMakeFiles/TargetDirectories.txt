@@ -1,0 +1,2 @@
+C:/data-personal/programming/swim_time_calculator/code/android/app/.cxx/RelWithDebInfo/6j1q375e/x86_64/CMakeFiles/edit_cache.dir
+C:/data-personal/programming/swim_time_calculator/code/android/app/.cxx/RelWithDebInfo/6j1q375e/x86_64/CMakeFiles/rebuild_cache.dir

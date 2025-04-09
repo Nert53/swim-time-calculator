@@ -61,6 +61,7 @@ class MenuDrawer extends StatelessWidget {
                     '\n\nAuthor: umimplavat.cz '
                     '\n\nCreator: Vojtech Netrh '
                     '\n\nContact: umimplavat@gmail.com'
+                    '\n\nPrivacy policy: www.umimplavat.vojtech-netrh.cz/swim-time.html'
                     '\n\nThis app calculates how potential changes in two key performance parameters - **stroke rate (_SR_)** and **stroke length (_SL_)** - affect the average clean swim time.'
                     ' **Swimming speed (_V_)** results from the optimal balance between **SR** and **SL** (_V = SR * SL_).'
                     ' Users can adjust **SR** and **SL** values to estimate potential average changes in clean swim time.'

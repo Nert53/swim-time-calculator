@@ -35,6 +35,10 @@ If you download the app from the mobile stores mentioned above and you like it, 
 
 ## Versions changelog 
 
+#### v2.0.2
+- Added link to privacy policy.
+- Small UI changes.
+
 #### v2.0.0
 - Export saved data to PDF.
 - UI changes.

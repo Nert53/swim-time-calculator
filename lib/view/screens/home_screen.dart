@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(
-                      height: 28,
+                      height: 22,
                     ),
                     Row(
                       children: [
@@ -251,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(
-                      height: 28,
+                      height: 22,
                     ),
                     TextField(
                       controller: resultTimeController,
@@ -269,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(
-                      height: 28,
+                      height: 22,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -306,6 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    elevation: 3,
                                     onPressed: () {
                                       setState(() {
                                         final oldSR = double.parse(
@@ -333,6 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    elevation: 3,
                                     onPressed: () {
                                       setState(() {
                                         final oldSR = double.parse(
@@ -389,6 +391,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    elevation: 3,
                                     onPressed: () {
                                       setState(() {
                                         final oldSL = double.parse(
@@ -417,6 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    elevation: 3,
                                     onPressed: () {
                                       setState(() {
                                         final oldSL = double.parse(
@@ -441,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(
-                      height: 32,
+                      height: 28,
                     ),
                     ElevatedButton(
                       onPressed: () {

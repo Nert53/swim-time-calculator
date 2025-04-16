@@ -1,7 +1,9 @@
+import 'package:code/constants.dart';
 import 'package:code/view/screens/saved_records_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
@@ -50,18 +52,26 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.lock_person_outlined),
+            title: const Text('Privacy policy'),
+            onTap: () {
+              _launchUrl(
+                privacyPolicyUrl,
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('About app'),
             onTap: () {
               _dialogInfo(
                 context,
                 'About app',
-                'Version 2.0.0'
+                'Version 2.0.2'
                     '\n\nOriginal idea: Raul Arellano '
                     '\n\nAuthor: umimplavat.cz '
                     '\n\nCreator: Vojtech Netrh '
                     '\n\nContact: umimplavat@gmail.com'
-                    '\n\nPrivacy policy: www.umimplavat.vojtech-netrh.cz/swim-time.html'
                     '\n\nThis app calculates how potential changes in two key performance parameters - **stroke rate (_SR_)** and **stroke length (_SL_)** - affect the average clean swim time.'
                     ' **Swimming speed (_V_)** results from the optimal balance between **SR** and **SL** (_V = SR * SL_).'
                     ' Users can adjust **SR** and **SL** values to estimate potential average changes in clean swim time.'
@@ -109,4 +119,10 @@ Future<void> _dialogInfo(BuildContext context, String title, String content) {
       );
     },
   );
+}
+
+Future<void> _launchUrl(String link) async {
+  if (!await launchUrl(Uri.parse(link))) {
+    throw Exception('Could not launch $link');
+  }
 }

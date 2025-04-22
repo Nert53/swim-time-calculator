@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'umimplavat.cz',
+      title: 'Swim Time Calculator',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: umimplavatMainColor, // color of umimplavat.cz

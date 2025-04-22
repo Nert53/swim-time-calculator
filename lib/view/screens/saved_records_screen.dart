@@ -174,24 +174,29 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                   }
                 });
               },
-              icon: Icon(Icons.check_box_outlined),
+              icon: Icon(
+                  isSelectingView
+                      ? Icons.check_box_rounded
+                      : Icons.check_box_outlined,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer),
               tooltip: 'Enable selection mode.'),
+          isSelectingView
+              ? IconButton(
+                  onPressed: () async {
+                    List<SwimRecordItem> dataToExport =
+                        await database.allRecords;
+                    if (dataToExport.isNotEmpty && context.mounted) {
+                      exportRecordsToPDF(context, dataToExport);
+                    }
+                  },
+                  icon: Icon(Icons.adaptive.share,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer),
+                  tooltip: 'Export all records to PDF.',
+                )
+              : const SizedBox(),
           IconButton(
-            onPressed: () async {
-              List<SwimRecordItem> dataToExport = await database.allRecords;
-              if (dataToExport.isNotEmpty && context.mounted) {
-                exportRecordsToPDF(context, dataToExport);
-              }
-            },
-            icon: const Icon(
-              Icons.file_download_outlined,
-              color: Colors.black,
-            ),
-            tooltip: 'Export all records to PDF.',
-          ),
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            color: Colors.black,
+            icon: const Icon(Icons.help_outline),
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
             tooltip: 'View information about icons.',
             onPressed: () {
               showDialog(
@@ -276,8 +281,10 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                               (index) => {_records[index].id: isSelectedAll});
                         });
                       },
-                      icon: const Icon(
-                        Icons.select_all,
+                      icon: Icon(
+                        isSelectedAll
+                            ? Icons.deselect_rounded
+                            : Icons.select_all,
                         size: 28,
                       ),
                     ),

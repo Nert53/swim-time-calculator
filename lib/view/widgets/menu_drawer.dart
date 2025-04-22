@@ -2,7 +2,6 @@ import 'package:code/constants.dart';
 import 'package:code/view/screens/saved_records_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -27,7 +26,7 @@ class MenuDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(FontAwesomeIcons.noteSticky),
+            leading: const Icon(Icons.help_center_outlined),
             title: const Text('How to use'),
             onTap: () {
               _dialogInfo(

@@ -77,7 +77,7 @@ class InfoDatabaseDialog extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Icon(Icons.file_download_outlined),
+              Icon(Icons.adaptive.share),
               const SizedBox(width: 8),
               const Text('... save records in PDF'),
             ],

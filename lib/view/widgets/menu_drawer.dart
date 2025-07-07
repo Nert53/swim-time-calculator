@@ -3,6 +3,7 @@ import 'package:code/view/screens/saved_records_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io' show Platform;
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
@@ -56,6 +57,21 @@ class MenuDrawer extends StatelessWidget {
             onTap: () {
               _launchUrl(
                 privacyPolicyUrl,
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.star_outline),
+            title: const Text('Rate app'),
+            onTap: () {
+              String rateUrl = Platform.isAndroid
+                  ? 'https://play.google.com/store/apps/details?id=cz.umimplavat.swim_pace_calculator&pcampaignid=web_share'
+                  : Platform.isIOS
+                      ? 'https://apps.apple.com/app/id6670363039?action=write-review'
+                      : 'mailto:vojtanetrh@gmail.com?subject=Thanks%20for%20Swim%20Time%20Calculator';
+              _launchUrl(
+                rateUrl,
+                mode: LaunchMode.externalApplication,
               );
             },
           ),
@@ -120,8 +136,9 @@ Future<void> _dialogInfo(BuildContext context, String title, String content) {
   );
 }
 
-Future<void> _launchUrl(String link) async {
-  if (!await launchUrl(Uri.parse(link))) {
+Future<void> _launchUrl(String link,
+    {LaunchMode mode = LaunchMode.inAppBrowserView}) async {
+  if (!await launchUrl(Uri.parse(link), mode: mode)) {
     throw Exception('Could not launch $link');
   }
 }

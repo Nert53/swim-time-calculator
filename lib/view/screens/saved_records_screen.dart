@@ -181,7 +181,8 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                   color: Theme.of(context).colorScheme.onPrimaryContainer),
               tooltip: 'Enable selection mode.'),
           isSelectingView
-              ? IconButton(
+              ? const SizedBox.shrink()
+              : IconButton(
                   onPressed: () async {
                     List<SwimRecordItem> dataToExport =
                         await database.allRecords;
@@ -192,8 +193,7 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                   icon: Icon(Icons.adaptive.share,
                       color: Theme.of(context).colorScheme.onPrimaryContainer),
                   tooltip: 'Export all records to PDF.',
-                )
-              : const SizedBox(),
+                ),
           IconButton(
             icon: const Icon(Icons.help_outline),
             color: Theme.of(context).colorScheme.onPrimaryContainer,

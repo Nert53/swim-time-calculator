@@ -79,7 +79,7 @@ class InfoDatabaseDialog extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.adaptive.share),
               const SizedBox(width: 8),
-              const Text('... save records in PDF'),
+              const Text('... export all records'),
             ],
           ),
         ],

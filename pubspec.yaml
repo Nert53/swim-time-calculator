@@ -36,6 +36,7 @@ dependencies:
   drift: ^2.23.1
   drift_flutter: ^0.2.4
   url_launcher: ^6.3.1
+  csv: ^6.0.0
 
 # edits app icons accross platforms (!! mac and windows must be done again)
 flutter_launcher_icons:

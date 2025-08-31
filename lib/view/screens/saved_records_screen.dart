@@ -5,6 +5,7 @@ import 'package:code/main.dart';
 import 'package:code/pdf_export.dart';
 import 'package:code/view/screens/home_screen.dart';
 import 'package:code/view/widgets/database_list_tile.dart';
+import 'package:code/view/widgets/export_database_dialog.dart';
 import 'package:code/view/widgets/info_database_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -184,11 +185,12 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
               ? const SizedBox.shrink()
               : IconButton(
                   onPressed: () async {
-                    List<SwimRecordItem> dataToExport =
-                        await database.allRecords;
-                    if (dataToExport.isNotEmpty && context.mounted) {
-                      exportRecordsToPDF(context, dataToExport);
-                    }
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ExportDatabaseDialog();
+                      },
+                    );
                   },
                   icon: Icon(Icons.adaptive.share,
                       color: Theme.of(context).colorScheme.onPrimaryContainer),

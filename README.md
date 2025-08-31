@@ -35,6 +35,17 @@ If you download the app from the mobile stores mentioned above and you like it, 
 
 ## Versions changelog 
 
+#### v2.1.1
+- Improved export.
+
+#### v2.1.0
+- Added option to export database to CSV.
+- Added "rate the app" button.
+
+#### v2.0.3
+- Shortened name displayed on home screen.
+- Prettier icons in "saved values" screen.
+
 #### v2.0.2
 - Added link to privacy policy.
 - Small UI changes.

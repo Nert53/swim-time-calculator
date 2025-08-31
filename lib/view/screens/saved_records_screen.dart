@@ -194,7 +194,7 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                   },
                   icon: Icon(Icons.adaptive.share,
                       color: Theme.of(context).colorScheme.onPrimaryContainer),
-                  tooltip: 'Export all records to PDF.',
+                  tooltip: 'Export all records.',
                 ),
           IconButton(
             icon: const Icon(Icons.help_outline),

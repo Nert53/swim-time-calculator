@@ -11,8 +11,7 @@ import 'package:share_plus/share_plus.dart';
 
 Future<void> exportRecordsToPDF(
     BuildContext context, List<SwimRecordItem> data) async {
-  DateFormat formatter = DateFormat('dd-MM-yyyy HH:mm');
-  String exportTime = formatter.format(DateTime.now());
+  String exportTime = DateFormat('dd-MM-yyyy HH-mm').format(DateTime.now());
   String fileName = 'swimTime_$exportTime.pdf';
 
   showDialog(
@@ -107,10 +106,12 @@ Future<void> exportRecordsToPDF(
           // Data rows
           createDataRow('Created on', dateFormat.format(record.dateCreated)),
           createDataRow('Original Time [s]', '${record.originalTime}'),
-          createDataRow('Original Stroke Rate [cycles/min]', '${record.originalStrokeRate}'),
+          createDataRow('Original Stroke Rate [cycles/min]',
+              '${record.originalStrokeRate}'),
           createDataRow('Section Length [m]', '${record.sectionLength}'),
           createDataRow('New Time [s]', '${record.newTime}'),
-          createDataRow('New Stroke Rate [cycles/min]', '${record.newStrokeRate}'),
+          createDataRow(
+              'New Stroke Rate [cycles/min]', '${record.newStrokeRate}'),
           createDataRow('New Stroke Length [m]', '${record.newStrokeLength}'),
           // Note row
           pw.TableRow(
@@ -216,18 +217,20 @@ Future<void> exportRecordsToPDF(
                 if (await file.exists()) {
                   await file.delete();
                 }
-                Navigator.pop(context);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () async {
                 try {
-                  // Use Share.shareXFiles for iOS compatibility
-                  await Share.shareXFiles(
-                    [XFile(file.path)],
-                    subject: 'Swim Time Export ($exportTime)',
-                  );
+                  final fileParams = ShareParams(
+                      subject: 'Swim Time Export ($exportTime)',
+                      files: [XFile(file.path)]);
+                  SharePlus.instance.share(fileParams);
+
                   if (context.mounted) {
                     Navigator.pop(context);
                   }

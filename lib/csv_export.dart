@@ -8,8 +8,8 @@ import 'package:share_plus/share_plus.dart';
 
 Future<void> exportRecordsToCSV(
     BuildContext context, List<SwimRecordItem> data) async {
-  DateFormat formatter = DateFormat('dd-MM-yyyy HH:mm');
-  String exportTime = formatter.format(DateTime.now());
+  DateFormat nameFormatter = DateFormat('dd-MM-yyyy HH:mm');
+  String exportTime = DateFormat('dd-MM-yyyy HH-mm').format(DateTime.now());
   String fileName = 'swimTime_$exportTime.csv';
 
   showDialog(
@@ -53,7 +53,7 @@ Future<void> exportRecordsToCSV(
   for (final record in data) {
     // Procces the date time for better readability
     final recordJson = record.toJson();
-    recordJson['dateCreated'] = formatter.format(record.dateCreated);
+    recordJson['dateCreated'] = nameFormatter.format(record.dateCreated);
 
     rows.add(recordJson.values.toList());
   }
@@ -83,18 +83,20 @@ Future<void> exportRecordsToCSV(
                 if (await file.exists()) {
                   await file.delete();
                 }
-                Navigator.pop(context);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () async {
                 try {
-                  // Use Share.shareXFiles for iOS compatibility
-                  await Share.shareXFiles(
-                    [XFile(file.path)],
-                    subject: 'Swim Time Export ($exportTime)',
-                  );
+                  final fileParams = ShareParams(
+                      subject: 'Swim Time Export ($exportTime)',
+                      files: [XFile(file.path)]);
+                  SharePlus.instance.share(fileParams);
+                  
                   if (context.mounted) {
                     Navigator.pop(context);
                   }

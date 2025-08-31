@@ -25,8 +25,12 @@ class ExportDatabaseDialog extends StatelessWidget {
                       Navigator.pop(context);
                     }
                   },
+                  style: ButtonStyle(iconSize: WidgetStateProperty.all(20)),
                   icon: Icon(Icons.text_snippet_outlined),
-                  label: Text('Export to PDF'))
+                  label: Text(
+                    'Export to PDF',
+                    style: TextStyle(fontSize: 16),
+                  ))
             ],
           ),
           Row(
@@ -40,8 +44,12 @@ class ExportDatabaseDialog extends StatelessWidget {
                       Navigator.pop(context);
                     }
                   },
+                  style: ButtonStyle(iconSize: WidgetStateProperty.all(20)),
                   icon: Icon(Icons.archive_outlined),
-                  label: Text('Backup as csv'))
+                  label: Text(
+                    'Export to CSV',
+                    style: TextStyle(fontSize: 16),
+                  ))
             ],
           )
         ],

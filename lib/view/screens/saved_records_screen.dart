@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:code/constants.dart';
 import 'package:code/data/database_drift.dart';
 import 'package:code/main.dart';
-import 'package:code/pdf_export.dart';
 import 'package:code/view/screens/home_screen.dart';
 import 'package:code/view/widgets/database_list_tile.dart';
 import 'package:code/view/widgets/export_database_dialog.dart';
@@ -23,6 +22,7 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
   bool isUndoPressed = false;
   bool isSelectingView = false;
   bool isSelectedAll = false;
+  int currentlyDeletedRecordsCount = 0;
   Set<int> selectedSort = {1};
   List<Map<int, bool>> isSelected = [];
   final noteTextController = TextEditingController();
@@ -114,19 +114,24 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
     setState(() {
       _records.remove(record);
     });
+    currentlyDeletedRecordsCount++;
 
     displayUndoSnackbar(context, record, recordIndex);
     Timer.periodic(const Duration(milliseconds: 3000), (timer) async {
       if (isUndoPressed) {
         timer.cancel();
         isUndoPressed = false;
+        currentlyDeletedRecordsCount--;
         return;
       } else {
         database.deleteRecordById(record.id);
         isUndoPressed = false;
-        setState(() {
-          _getAllRecords();
-        });
+        currentlyDeletedRecordsCount--;
+        if (currentlyDeletedRecordsCount == 0) {
+          setState(() {
+            _getAllRecords();
+          });
+        }
       }
     });
   }
@@ -197,8 +202,6 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                         },
                       );
                     }
-
-                    _getAllRecords();
                   },
                   icon: Icon(Icons.adaptive.share,
                       color: Theme.of(context).colorScheme.onPrimaryContainer),

@@ -185,12 +185,20 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
               ? const SizedBox.shrink()
               : IconButton(
                   onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return ExportDatabaseDialog();
-                      },
-                    );
+                    List<SwimRecordItem> dataToExport =
+                        await database.allRecords;
+
+                    if (context.mounted) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ExportDatabaseDialog(
+                              dataToExport: dataToExport);
+                        },
+                      );
+                    }
+
+                    _getAllRecords();
                   },
                   icon: Icon(Icons.adaptive.share,
                       color: Theme.of(context).colorScheme.onPrimaryContainer),
@@ -269,7 +277,14 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
                         displaySnackBar(context, 'No values selected.');
                         return;
                       }
-                      exportRecordsToPDF(context, selectedRecords);
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ExportDatabaseDialog(
+                              dataToExport: selectedRecords);
+                        },
+                      );
                     },
                     child: Text('Export selected')),
                 trailing: Row(

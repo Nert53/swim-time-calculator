@@ -1,16 +1,20 @@
 import 'package:code/csv_export.dart';
+import 'package:code/csv_import.dart';
 import 'package:code/data/database_drift.dart';
 import 'package:code/main.dart';
 import 'package:code/pdf_export.dart';
+import 'package:code/view/screens/home_screen.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class ExportDatabaseDialog extends StatelessWidget {
-  const ExportDatabaseDialog({super.key});
+  final List<SwimRecordItem> dataToExport;
+  const ExportDatabaseDialog({super.key, required this.dataToExport});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Export options'),
+      title: const Text('File options'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -26,9 +30,9 @@ class ExportDatabaseDialog extends StatelessWidget {
                     }
                   },
                   style: ButtonStyle(iconSize: WidgetStateProperty.all(20)),
-                  icon: Icon(Icons.text_snippet_outlined),
+                  icon: Icon(Icons.article_outlined),
                   label: Text(
-                    'Export to PDF',
+                    'Export PDF',
                     style: TextStyle(fontSize: 16),
                   ))
             ],
@@ -45,13 +49,45 @@ class ExportDatabaseDialog extends StatelessWidget {
                     }
                   },
                   style: ButtonStyle(iconSize: WidgetStateProperty.all(20)),
-                  icon: Icon(Icons.archive_outlined),
+                  icon: Icon(Icons.table_chart_outlined),
                   label: Text(
-                    'Export to CSV',
+                    'Export CSV',
                     style: TextStyle(fontSize: 16),
                   ))
             ],
-          )
+          ),
+          const Divider(),
+          Row(
+            children: [
+              TextButton.icon(
+                  onPressed: () async {
+                    final result = await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['csv'],
+                    );
+
+                    if (result != null &&
+                        result.files.single.path != null &&
+                        context.mounted) {
+                      importRecordsFromCSV(context, result.files.single.path!);
+
+                      Navigator.of(context).pop();
+                    } else if (context.mounted) {
+                      Navigator.of(context).pop();
+                      displaySnackBar(context, 'No file selected');
+                    }
+                  },
+                  style: ButtonStyle(
+                      iconSize: WidgetStateProperty.all(20),
+                      foregroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.tertiary)),
+                  icon: Icon(Icons.upload_file_rounded),
+                  label: Text(
+                    'Import CSV',
+                    style: TextStyle(fontSize: 16),
+                  ))
+            ],
+          ),
         ],
       ),
       actions: [

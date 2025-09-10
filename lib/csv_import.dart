@@ -7,7 +7,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Future<void> importRecordsFromCSV(
+Future<bool> importRecordsFromCSV(
     BuildContext context, String pathToFile) async {
   DateFormat nameFormatter = DateFormat('dd-MM-yyyy HH:mm');
 
@@ -17,7 +17,7 @@ Future<void> importRecordsFromCSV(
       Navigator.pop(context);
       displaySnackBar(context, 'CSV file not found at $pathToFile');
     }
-    return;
+    return false;
   }
 
   final csvString = await file.readAsString();
@@ -29,7 +29,7 @@ Future<void> importRecordsFromCSV(
       Navigator.pop(context);
       displaySnackBar(context, 'File is empty or missing data');
     }
-    return;
+    return false;
   }
 
   // Get the record with the highest ID from the database
@@ -56,4 +56,6 @@ Future<void> importRecordsFromCSV(
 
     await database.addRecord(swimRecord);
   }
+
+  return true;
 }

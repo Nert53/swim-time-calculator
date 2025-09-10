@@ -4,6 +4,7 @@ import 'package:code/data/database_drift.dart';
 import 'package:code/main.dart';
 import 'package:code/pdf_export.dart';
 import 'package:code/view/screens/home_screen.dart';
+import 'package:code/view/screens/saved_records_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -69,9 +70,15 @@ class ExportDatabaseDialog extends StatelessWidget {
                     if (result != null &&
                         result.files.single.path != null &&
                         context.mounted) {
-                      importRecordsFromCSV(context, result.files.single.path!);
-
-                      Navigator.of(context).pop();
+                      final success = await importRecordsFromCSV(
+                          context, result.files.single.path!);
+                      if (success && context.mounted) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const SavedRecordsScreen();
+                        })); // Navigate back to database to reload the new (imported) records
+                      }
                     } else if (context.mounted) {
                       Navigator.of(context).pop();
                       displaySnackBar(context, 'No file selected');

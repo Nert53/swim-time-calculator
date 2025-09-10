@@ -306,6 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    heroTag: 'increase_stroke_rate',
                                     elevation: 3,
                                     onPressed: () {
                                       setState(() {
@@ -334,6 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    heroTag: 'decrease_stroke_rate',
                                     elevation: 3,
                                     onPressed: () {
                                       setState(() {
@@ -391,6 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    heroTag: 'increase_stroke_length',
                                     elevation: 3,
                                     onPressed: () {
                                       setState(() {
@@ -420,6 +423,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                   },
                                   child: FloatingActionButton(
+                                    heroTag: 'decrease_stroke_length',
                                     elevation: 3,
                                     onPressed: () {
                                       setState(() {

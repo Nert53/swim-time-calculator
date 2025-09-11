@@ -54,5 +54,7 @@
     <true/>
     <key>UIFileSharingEnabled</key>
     <true/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>App needs this access because of package used for import of CSV file.</string>
   </dict>
 </plist>

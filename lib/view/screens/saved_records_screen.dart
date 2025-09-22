@@ -7,6 +7,7 @@ import 'package:code/view/widgets/database_list_tile.dart';
 import 'package:code/view/widgets/export_database_dialog.dart';
 import 'package:code/view/widgets/info_database_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class SavedRecordsScreen extends StatefulWidget {
   const SavedRecordsScreen({super.key});
@@ -43,7 +44,9 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
 
   @override
   void initState() {
-    _getAllRecords();
+    if (!kIsWeb) {
+      _getAllRecords();
+    }
     super.initState();
   }
 
@@ -223,12 +226,18 @@ class _SavedRecordsScreenState extends State<SavedRecordsScreen> {
         ],
       ),
       body: Center(
-          child: isLoading
-              ? const CircularProgressIndicator()
-              : _records.isEmpty
-                  ? const Text('No values saved yet.',
-                      style: TextStyle(fontSize: 20))
-                  : buildValueList()),
+          child: kIsWeb
+              ? const Text(
+                  'Database is not supported on web version, which is only for demonstration purposes.\nPlease use mobile app to save your values.',
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                )
+              : isLoading
+                  ? const CircularProgressIndicator()
+                  : _records.isEmpty
+                      ? const Text('No values saved yet.',
+                          style: TextStyle(fontSize: 20))
+                      : buildValueList()),
     );
   }
 

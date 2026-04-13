@@ -46,12 +46,12 @@ Future<void> exportRecordsToCSV(
     return;
   }
 
-  // Process of covnerting list to CSV
+  // Process of converting list to CSV
   final rows = <List<dynamic>>[];
   rows.add(data.first.toJson().keys.toList());
 
   for (final record in data) {
-    // Procces the date time for better readability
+    // Process the date time for better readability
     final recordJson = record.toJson();
     recordJson['dateCreated'] = nameFormatter.format(record.dateCreated);
 

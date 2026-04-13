@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Swim Time Calculator',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: umimplavatMainColor, // color of umimplavat.cz
+          seedColor: umimplavatMainColor,
           brightness: Brightness.light,
         ),
         useMaterial3: true,

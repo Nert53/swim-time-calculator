@@ -54,7 +54,7 @@ Future<bool> importRecordsFromCSV(
       dateCreated: Value(nameFormatter.parse(row[8].toString())),
     );
 
-    await database.addRecord(swimRecord);
+    database.addRecord(swimRecord);
   }
 
   return true;

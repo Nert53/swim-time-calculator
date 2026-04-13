@@ -44,12 +44,12 @@ Future<bool> importRecordsFromCSV(
     final row = csvRows[i];
     SwimRecordItemsCompanion swimRecord = SwimRecordItemsCompanion(
       id: Value(newStartingId++),
-      originalTime: Value(row[1]),
-      originalStrokeRate: Value(row[2]),
-      sectionLength: Value(row[3]),
-      newTime: Value(row[4]),
-      newStrokeRate: Value(row[5]),
-      newStrokeLength: Value(row[6]),
+      originalTime: Value(double.tryParse(row[1]) ?? 0.0),
+      originalStrokeRate: Value(double.tryParse(row[2]) ?? 0.0),
+      sectionLength: Value(double.tryParse(row[3]) ?? 0.0),
+      newTime: Value(double.tryParse(row[4]) ?? 0.0),
+      newStrokeRate: Value(double.tryParse(row[5]) ?? 0.0),
+      newStrokeLength: Value(double.tryParse(row[6]) ?? 0.0),
       note: Value(row[7]),
       dateCreated: Value(nameFormatter.parse(row[8].toString())),
     );

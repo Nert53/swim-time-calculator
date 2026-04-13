@@ -92,11 +92,17 @@ Future<void> exportRecordsToCSV(
             FilledButton(
               onPressed: () async {
                 try {
+                  // place position for correctly render on iPad
+                  final box = context.findRenderObject() as RenderBox?;
+
                   final fileParams = ShareParams(
-                      subject: 'Swim Time Export ($exportTime)',
-                      files: [XFile(file.path)]);
+                    subject: 'Swim Time Export ($exportTime)',
+                    files: [XFile(file.path)],
+                    sharePositionOrigin:
+                        box!.localToGlobal(Offset.zero) & box.size,
+                  );
                   SharePlus.instance.share(fileParams);
-                  
+
                   if (context.mounted) {
                     Navigator.pop(context);
                   }

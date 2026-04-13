@@ -46,9 +46,9 @@ class AppDatabase extends _$AppDatabase {
         ));
   }
 
-  get oldRecordsCount => _importDataFromOldDatabase();
+  Future<int> get oldRecordsCount => _importDataFromOldDatabase();
 
-  addRecord(SwimRecordItemsCompanion record) {
+  bool addRecord(SwimRecordItemsCompanion record) {
     try {
       into(swimRecordItems).insert(record);
       return true;
@@ -57,12 +57,12 @@ class AppDatabase extends _$AppDatabase {
     }
   }
 
-  updateRecordById(SwimRecordItem record, int id) async {
+  Future<void> updateRecordById(SwimRecordItem record, int id) async {
     await (update(swimRecordItems)..where((tbl) => tbl.id.equals(id)))
         .write(record);
   }
 
-  deleteRecordById(int id) async {
+  Future<void> deleteRecordById(int id) async {
     await (delete(swimRecordItems)..where((tbl) => tbl.id.equals(id))).go();
   }
 
@@ -76,9 +76,18 @@ class AppDatabase extends _$AppDatabase {
   Future<void> deleteAllRecords() async {
     await delete(swimRecordItems).go();
   }
+
+  Stream<List<SwimRecordItem>> watchAllRecords() {
+    return (select(swimRecordItems)
+          ..orderBy([
+            (t) =>
+                OrderingTerm(expression: t.dateCreated, mode: OrderingMode.desc)
+          ]))
+        .watch();
+  }
 }
 
-_importDataFromOldDatabase() async {
+Future<int> _importDataFromOldDatabase() async {
   // Import data from old database
   List<AllValues> oldRecords = await DatabaseService.instance.getValues();
   for (var record in oldRecords) {

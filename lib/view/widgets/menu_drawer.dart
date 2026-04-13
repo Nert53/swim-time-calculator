@@ -1,17 +1,72 @@
 import 'package:code/constants.dart';
+import 'package:code/preference_service.dart';
 import 'package:code/view/screens/saved_records_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
+import 'package:device_info_plus/device_info_plus.dart';
 
-class MenuDrawer extends StatelessWidget {
+class MenuDrawer extends StatefulWidget {
   const MenuDrawer({
     super.key,
   });
 
   @override
+  State<MenuDrawer> createState() => _MenuDrawerState();
+}
+
+class _MenuDrawerState extends State<MenuDrawer> {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  IosDeviceInfo? iosInfo;
+  bool isLoading = true;
+  bool? splitScreenMode;
+
+  Future<void> _getDeviceInfo() async {
+    final info = await deviceInfo.iosInfo;
+    if (!mounted) return;
+    setState(() {
+      iosInfo = info;
+    });
+  }
+
+  void loadSplitScreenMode() async {
+    if (!mounted) return;
+
+    setState(() {
+      PreferenceService.getBool('isSplitScreenMode', defaultValue: false).then((value) {
+        splitScreenMode = value;
+        isLoading = false;
+      });
+    });
+  }
+
+  void switchSplitMode(bool value) async {
+    if (splitScreenMode == null) return;
+
+    setState(() {
+      PreferenceService.setBool('isSplitScreenMode', value);
+      splitScreenMode = !splitScreenMode!;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDeviceInfo();
+    loadSplitScreenMode();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Drawer(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets
@@ -21,9 +76,20 @@ class MenuDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primaryContainer,
             ),
-            child: const Text(
-              'Swim Time Calculator',
-              style: TextStyle(fontSize: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Text("powered by:"),
+                    Image(
+                      image: AssetImage('assets/logo/UMIM_logo_rect_black.png'),
+                      height: 110,
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
           ListTile(
@@ -75,6 +141,19 @@ class MenuDrawer extends StatelessWidget {
               );
             },
           ),
+          (iosInfo != null &&
+                  iosInfo!.model.contains("iPad") &&
+                  splitScreenMode != null)
+              ? ListTile(
+                  leading: const Icon(Icons.vertical_split_outlined),
+                  title: const Text('Split screen (horizontal only)'),
+                  trailing: Switch(
+                      value: splitScreenMode!,
+                      onChanged: (value) {
+                        switchSplitMode(value);
+                      }),
+                )
+              : Container(),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('About app'),

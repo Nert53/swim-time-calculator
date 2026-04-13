@@ -1,4 +1,4 @@
-import 'package:code/preference_service.dart';
+import 'package:code/data/preference_service.dart';
 import 'package:code/view/screens/home_screen_split.dart';
 import 'package:code/view/screens/home_screen_standard.dart';
 import 'package:code/view/widgets/menu_drawer.dart';

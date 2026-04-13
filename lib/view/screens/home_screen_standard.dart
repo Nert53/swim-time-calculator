@@ -159,7 +159,7 @@ class _HomeScreenStandardState extends State<HomeScreenStandard> {
         dateCreated: drift.Value(DateTime.now()),
         note: drift.Value(noteText));
 
-    if (await database.addRecord(newRecord) != null) {
+    if (database.addRecord(newRecord)) {
       displaySnackBar(context, 'Values saved successfully!',
           color: Colors.green);
     } else {

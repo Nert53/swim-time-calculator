@@ -4,8 +4,8 @@ import 'package:code/data/database_drift.dart';
 import 'package:code/functions.dart';
 import 'package:code/main.dart';
 import 'package:code/view/widgets/database_list_tile.dart';
-import 'package:code/view/widgets/export_database_dialog.dart';
-import 'package:code/view/widgets/info_database_dialog.dart';
+import 'package:code/view/widgets/dialogs/export_database_dialog.dart';
+import 'package:code/view/widgets/dialogs/info_database_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 

@@ -21,7 +21,7 @@ Future<bool> importRecordsFromCSV(
   }
 
   final csvString = await file.readAsString();
-  final csvRows = const CsvToListConverter().convert(csvString, eol: '\n');
+  final csvRows = Csv(lineDelimiter: '\n').decode(csvString);
 
   // First row is header
   if (csvRows.isEmpty || csvRows.length < 2) {

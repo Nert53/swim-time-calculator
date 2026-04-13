@@ -256,7 +256,7 @@ class _HomeScreenStandardState extends State<HomeScreenStandard> {
                         child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(FontAwesomeIcons.calculator),
+                              FaIcon(FontAwesomeIcons.calculator),
                               SizedBox(width: 8),
                               Text(
                                 'Calculate',

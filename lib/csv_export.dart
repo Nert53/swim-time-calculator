@@ -57,7 +57,7 @@ Future<void> exportRecordsToCSV(
 
     rows.add(recordJson.values.toList());
   }
-  final csv = const ListToCsvConverter().convert(rows);
+  final csv = Csv().encode(rows);
 
   // Get directory for saving file
   final Directory directory = await getApplicationDocumentsDirectory();

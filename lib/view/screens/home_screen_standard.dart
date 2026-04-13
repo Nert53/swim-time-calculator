@@ -243,6 +243,29 @@ class _HomeScreenStandardState extends State<HomeScreenStandard> {
                 ),
                 Row(
                   children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        setState(() {
+                          timeController.clear();
+                          strokeRateController.clear();
+                          sectionLengthController.clear();
+                          resultTimeController.clear();
+                          strokeRateController2.clear();
+                          strokeLengthController.clear();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.errorContainer),
+                      label: Icon(
+                        Icons.delete_sweep_outlined,
+                        size: 26,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
                     Expanded(
                       child: FilledButton(
                         onPressed: initialCalculation,
@@ -264,29 +287,6 @@ class _HomeScreenStandardState extends State<HomeScreenStandard> {
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               )
                             ]),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        setState(() {
-                          timeController.clear();
-                          strokeRateController.clear();
-                          sectionLengthController.clear();
-                          resultTimeController.clear();
-                          strokeRateController2.clear();
-                          strokeLengthController.clear();
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.errorContainer),
-                      label: Icon(
-                        Icons.delete_sweep_outlined,
-                        size: 26,
-                        color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                     const SizedBox(

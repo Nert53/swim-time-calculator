@@ -161,7 +161,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               _dialogInfo(
                 context,
                 'About app',
-                'Version 2.0.2'
+                'Version 3.0.1'
                     '\n\nOriginal idea: Raul Arellano '
                     '\n\nAuthor: umimplavat.cz '
                     '\n\nCreator: Vojtech Netrh '

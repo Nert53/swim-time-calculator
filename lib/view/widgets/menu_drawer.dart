@@ -34,7 +34,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
     if (!mounted) return;
 
     setState(() {
-      PreferenceService.getBool('isSplitScreenMode', defaultValue: false).then((value) {
+      PreferenceService.getBool('isSplitScreenMode', defaultValue: false)
+          .then((value) {
         splitScreenMode = value;
         isLoading = false;
       });
@@ -147,11 +148,19 @@ class _MenuDrawerState extends State<MenuDrawer> {
               ? ListTile(
                   leading: const Icon(Icons.vertical_split_outlined),
                   title: const Text('Split screen (horizontal only)'),
-                  trailing: Switch(
-                      value: splitScreenMode!,
-                      onChanged: (value) {
-                        switchSplitMode(value);
-                      }),
+                  enabled: MediaQuery.of(context).orientation ==
+                      Orientation.landscape,
+                  trailing:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? Switch(
+                              value: splitScreenMode!,
+                              onChanged: null,
+                            )
+                          : Switch(
+                              value: splitScreenMode!,
+                              onChanged: (value) {
+                                switchSplitMode(value);
+                              }),
                 )
               : Container(),
           ListTile(

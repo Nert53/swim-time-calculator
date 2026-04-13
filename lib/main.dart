@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: const Color.fromARGB(255, 240, 240, 240),
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }

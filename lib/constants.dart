@@ -6,6 +6,8 @@ Color errorColor = Colors.red;
 
 DateFormat dateFormat = DateFormat('dd-MM-yyyy (HH:mm)');
 
+double minimalTabletWidth = 600.0;
+
 const String privacyPolicyUrl =
     'https://quartz.vojtech-netrh.cz/published-apps/Swim-Time-Calculator';
 

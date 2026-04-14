@@ -1,3 +1,4 @@
+import 'package:code/constants.dart';
 import 'package:code/data/preference_service.dart';
 import 'package:code/view/screens/home_screen_split.dart';
 import 'package:code/view/screens/home_screen_standard.dart';
@@ -14,20 +15,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  IosDeviceInfo? iosInfo;
-
-  Future<void> _getDeviceInfo() async {
-    iosInfo = await deviceInfo.iosInfo;
-
-    setState(() {
-      iosInfo = iosInfo;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _getDeviceInfo();
   }
 
   @override
@@ -52,16 +43,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       centerTitle: true,
                       actions: [
-                        Image.asset('assets/logo/UMIM_logo_circle_black.png',
-                            height: 32)
+                        MediaQuery.of(context).size.width <
+                                    minimalTabletWidth &&
+                                MediaQuery.of(context).viewInsets.bottom > 0
+                            ? IconButton(
+                                icon: const Icon(Icons.keyboard_hide),
+                                onPressed: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                },
+                              )
+                            : Container(),
                       ],
                       actionsPadding: const EdgeInsets.only(right: 16),
                     ),
                     drawer: const MenuDrawer(),
-                    body: (iosInfo != null &&
-                            iosInfo!.model.contains("iPad") &&
-                            Orientation.landscape ==
-                                MediaQuery.of(context).orientation &&
+                    body: (MediaQuery.of(context).size.width >
+                                minimalTabletWidth &&
+                            MediaQuery.of(context).orientation ==
+                                Orientation.landscape &&
                             isSplitScreenMode)
                         ? const HomeScreenSplit()
                         : HomeScreenStandard());

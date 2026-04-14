@@ -30,12 +30,12 @@ class _HomeScreenStandardState extends State<HomeScreenStandard> {
 
   @override
   void initState() {
+    super.initState();
     strokeRateController2.addListener(() {
       updateResultTime();
     });
     strokeLengthController.addListener(() {
       updateResultTime();
-      super.initState();
     });
   }
 
@@ -69,13 +69,14 @@ class _HomeScreenStandardState extends State<HomeScreenStandard> {
 
   void updateResultTime() {
     final sectionLength = double.parse(sectionLengthController.text);
-    final strokeLength = double.parse(strokeLengthController.text);
+    final strokeLength = double.parse(strokeLengthController.text.isEmpty
+        ? '0'
+        : strokeLengthController.text);
     final strokeTime = 60 / double.parse(strokeRateController2.text);
 
     if (calculateButtonClick) {
-      resultTimeController.text = double.parse(timeController.text)
-          .toStringAsFixed(
-              2); // value will always be displayed wit 2 decimal places
+      resultTimeController.text =
+          double.parse(timeController.text).toStringAsFixed(2);
       updateResultTimeColor();
       calculateButtonClick = false;
       return;

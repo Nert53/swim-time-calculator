@@ -142,8 +142,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               );
             },
           ),
-          (iosInfo != null &&
-                  iosInfo!.model.contains("iPad") &&
+          (MediaQuery.of(context).size.width > minimalTabletWidth &&
                   splitScreenMode != null)
               ? ListTile(
                   leading: const Icon(Icons.vertical_split_outlined),

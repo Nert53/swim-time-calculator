@@ -34,35 +34,46 @@ If you download the app from the mobile stores mentioned above and you like it, 
 **Creator:** [Vojtech Netrh](https://github.com/Nert53)
 
 ## Versions changelog 
+### v3.0.1 (last version)
+- Added split home screen UI for iPad.
+- Improved button layout.
+- Updated packages.
 
-#### v2.1.1
-- Improved export.
-
-#### v2.1.0
-- Added option to export database to CSV.
-- Added "rate the app" button.
-
-#### v2.0.3
-- Shortened name displayed on home screen.
-- Prettier icons in "saved values" screen.
-
-#### v2.0.2
-- Added link to privacy policy.
-- Small UI changes.
-
-#### v2.0.0
-- Export saved data to PDF.
-- UI changes.
-
-#### v1.1.3
-- Fixed bug with saving decimal values.
-- Added undo feature for deleting values.
-
-#### v1.1.2
-- Fixed bug with no possibility of entering decimal numbers.
-
-#### v1.1.0
-- Initial version
+<details>
+  <summary>View all versions</summary>
+  #### v2.1.2
+  - Improved animations
+  - Fixed bugs
+  
+  #### v2.1.1
+  - Improved export.
+  
+  #### v2.1.0
+  - Added option to export database to CSV.
+  - Added "rate the app" button.
+  
+  #### v2.0.3
+  - Shortened name displayed on home screen.
+  - Prettier icons in "saved values" screen.
+  
+  #### v2.0.2
+  - Added link to privacy policy.
+  - Small UI changes.
+  
+  #### v2.0.0
+  - Export saved data to PDF.
+  - UI changes.
+  
+  #### v1.1.3
+  - Fixed bug with saving decimal values.
+  - Added undo feature for deleting values.
+  
+  #### v1.1.2
+  - Fixed bug with no possibility of entering decimal numbers.
+  
+  #### v1.1.0
+  - Initial version
+</details>
 
 ## Technical Support Contant
 If you have any questions please contact us on marek@umimplavat.cz or umimplavat@gmail.com.

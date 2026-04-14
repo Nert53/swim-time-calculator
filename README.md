@@ -34,13 +34,17 @@ If you download the app from the mobile stores mentioned above and you like it, 
 **Creator:** [Vojtech Netrh](https://github.com/Nert53)
 
 ## Versions changelog 
-### v3.0.1 (last version)
-- Added split home screen UI for iPad.
-- Improved button layout.
-- Updated packages.
+#### v3.0.2 (last version)
+- Added feature dialog
+- Fixed bugs
 
 <details>
   <summary>View all versions</summary>
+  #### v3.0.1 (last version)
+  - Added split home screen UI for iPad
+  - Improved button layout
+  - Updated packages
+  
   #### v2.1.2
   - Improved animations
   - Fixed bugs

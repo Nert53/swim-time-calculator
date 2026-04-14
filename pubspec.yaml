@@ -2,7 +2,7 @@ name: code
 description: "App for umimplavat company to optimizing swimmer's stroke rate."
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.1+15
+version: 3.0.2+16
 
 environment:
   sdk: ">=3.3.1 <4.0.0"
@@ -33,6 +33,7 @@ dependencies:
   file_picker: ^11.0.2
   device_info_plus: ^12.3.0
   shared_preferences: ^2.5.5
+  flutter_svg: ^2.2.4
 
 # edits app icons accross platforms (!! mac and windows must be done again)
 flutter_launcher_icons:
@@ -146,6 +147,7 @@ flutter:
 
   assets:
     - assets/icons/arrow_range.png
+    - assets/icons/party_popper.svg
     - assets/logo/
     - assets/
 

@@ -2,6 +2,7 @@ import 'package:code/constants.dart';
 import 'package:code/data/preference_service.dart';
 import 'package:code/view/screens/home_screen_split.dart';
 import 'package:code/view/screens/home_screen_standard.dart';
+import 'package:code/view/widgets/dialogs/feature_dialog.dart';
 import 'package:code/view/widgets/menu_drawer.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,23 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showFeatureDialogIfNeeded();
+    });
+  }
+
+  Future<void> _showFeatureDialogIfNeeded() async {
+    final splitScreenFeature =
+        await PreferenceService.getInt('splitScreenFeature', defaultValue: 0);
+
+    if (!mounted || splitScreenFeature >= 5) {
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (context) => const FeatureDialog(),
+    );
   }
 
   @override
